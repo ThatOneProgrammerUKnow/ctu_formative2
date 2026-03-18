@@ -12,22 +12,30 @@ import java.io.FileNotFoundException;
  * @author kobus
  */
 public class MainApp {
+// --->>> Comment templates <<<---
+// |=================================================================| 40chars |=================================================================|
+// |==================================================| 30chars |==================================================|
+// |=========================| 15chars |=========================|
+// |===============| 10chars |===============|
+// |=====| 5chars |=====|
 
+// ===== Copy 
+    
+    
     public static void main(String[] args) {
-        // |=========================| Initiating objects |=========================|
+        // |==================================================| Retrieving and constructing objects |==================================================|
         // |===============| Configuration |===============|
         char delimeter = '#';
         String vehiclesFileName = "vehicles.txt";
         
-        // |===============| Configuration |===============|
         
         
         // |===============| Configuration |===============|
-        System.out.println("=== Populating class objects ===");
+        System.out.println("-> Populating class objects");
         File file = new File(vehiclesFileName);
         
         // |===============| First file read - counting objects |===============|
-        System.out.println("System: Counting vehicles...");
+        System.out.println("-> System: Counting vehicles...");
         int totalFields = 0;
         int totalObjects = 0;
         try {
@@ -56,18 +64,18 @@ public class MainApp {
             scanner.close();
             System.out.printf("System: Succesfully counted %d objects and %d fields\n", totalObjects, totalFields);
         } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found");
+            System.out.println("-> Error: File not found");
             e.printStackTrace();
         }
         
         // Constructing array
         Vehicle[] vehicles = new Vehicle[totalObjects];
         int dels = 0;
-        // Second file read: Populating arrays
-        System.out.println("Constructing objects...\n");
+        // |===============| Second file read - constructing objects |===============|
+        System.out.println("-> Constructing objects...\n");
+        
         try {
             Scanner scanner = new Scanner(file);
-            // |==| Second time looping through text file |==|
             // Variable decleration: row and col
             int row = 0;
             int col = 0;
@@ -83,13 +91,11 @@ public class MainApp {
                 // If there is a delimeter AND col is 0 - There was no fields in the previous "section", skip it and don't add up row
                 if (data.indexOf(delimeter) != -1 && col == 0){
                     data = scanner.nextLine();
-                    System.out.printf("There is a delimeter and col is %d\n", col);
                 }
                 
                 // If there is a delimeter or if it is the last line in the file - End of an object. 
                 // - reset col; - construct object; - reset attributes array; - Increase row;
                 if (data.indexOf(delimeter) != -1){
-                    System.out.println("There is a delimeter and it is the end of the object\n");
                     // Reset col
                     col=0;
                     
@@ -104,7 +110,6 @@ public class MainApp {
                     // Increase row
                     row++;
                 } else { // If there is not a delimeter | - Save data to attributes array; - Increase col;
-                    System.out.printf("There is no delimeter and col is %d\n", col);
                     attributes[col] = data;
                     col++;
                 }
@@ -114,24 +119,49 @@ public class MainApp {
             System.out.println("System: Succsesfully constructed vehicles from text file!\n");
  
         } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found");
+            System.out.println("-> Error: File not found");
             e.printStackTrace();
         }// |----------------------------------------> End of try and catch
-        for (int i=0; i<vehicles.length; i++){
-            System.out.printf("%-15s | %-15s | %-8d\n",vehicles[i].vin, vehicles[i].model, vehicles[i].year);
-        }
+        
+// Display vehicle objects
+//        for (int i=0; i<vehicles.length; i++){
+//            System.out.printf("%-15s | %-15s | %-8d\n",vehicles[i].vin, vehicles[i].model, vehicles[i].year);
+//        }
         
         
-        // Mock data
-        short year = 2026;
-        Vehicle vehicle1 = new Vehicle("BMW1234567890123", "BMW x5", year);
-        
+// |==================================================| Dealing with user input |==================================================|
         // Initiating objects
         Scanner input = new Scanner(System.in);
         
-        // Main app
+// |=========================| Vin Lookup |=========================|
+        // |=====| Getting VIN |=====|
         System.out.println("=== BMW Digital Service Appointment System ===");
-        String vin = input.nextLine();
+        System.out.println("Please enter the Vehicle Identification number to retrieve verhicle information: ");
+        String lookupVin = input.nextLine();
+        
+        // |=====| Looking up |=====|
+        System.out.println("-> Searching for vehicle...");
+        int lookupVehicleId = -1;
+        int i = 0;
+        while (lookupVehicleId == -1 && i < vehicles.length){ // while lookupVehicle is not changes and there are still objects left o be searched   
+            System.out.printf("-> Searching vehicle %d with VIN:'%s'\n", i, vehicles[i].vin);
+            if (vehicles[i].vin.equals(lookupVin)){ // If current vin = user input vin : update lookup id
+                lookupVehicleId = i;
+                System.out.println("-> Succsesfully found vehicle " + i);
+            }
+            
+            i++;
+        }
+        
+        // |=====| Validation |=====|
+        if (lookupVehicleId != -1) { // If the vin was found
+            System.out.println("\nVehicle details:");
+            System.out.printf("Vehicle Identification Number: %s\nModel: %s\nYear: %d\n", 
+                    vehicles[lookupVehicleId].vin, vehicles[lookupVehicleId].model, vehicles[lookupVehicleId].year);
+        } else{
+            System.out.println("Vehicle not found.");
+        }
+        
         
         
         input.close();
