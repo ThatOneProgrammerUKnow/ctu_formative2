@@ -11,17 +11,21 @@ import java.time.format.DateTimeFormatter;
  */
 public class Appointment {
     private int id;
+    private int customerId;
     private String vin;
+    private String serviceType;
     private LocalDate date;
     
     static private int totalAppointments = -1;
     
     // Constructor method
-    public Appointment(String vin, LocalDate date) {
+    public Appointment(int customerId, String vin,String serviceType, LocalDate date) {
         totalAppointments++;
         
         this.id = totalAppointments;
+        this.customerId = customerId;
         this.vin = vin;
+        this.serviceType = serviceType;
         this.date = date;
 
     }

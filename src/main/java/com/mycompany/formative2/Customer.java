@@ -10,20 +10,24 @@ package com.mycompany.formative2;
  */
 public class Customer {
     private int id;
-    private String customer;
+    private String name;
     private String contactNumber;
     
     static private int totalCustomers = -1;
     
-    public Customer(String customer, String contactNumber){
+    public Customer(String name, String contactNumber){
         totalCustomers++;
         this.id=totalCustomers;
-        this.customer = customer;
+        this.name = name;
         this.contactNumber = contactNumber;
     }
     
     @Override
     public String toString(){
-        return "Customer: " + customer + "\nContact number: " +contactNumber;
+        return "Customer: " + name + "\nContact number: " +contactNumber;
+    }
+    
+    public int getId(){
+        return this.id;
     }
 }

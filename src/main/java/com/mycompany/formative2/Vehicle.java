@@ -10,9 +10,9 @@ package com.mycompany.formative2;
 
 
 public class Vehicle {
-    String vin;
-    String model;
-    short year;
+    private String vin;
+    private String model;
+    private short year;
     
     static int objectCount = 0;
     
@@ -36,6 +36,18 @@ public class Vehicle {
        // Return the total amount of objects
        public static int totalObjects(){
            return objectCount;
+       }
+       
+       public String getVin(){
+           return this.vin;
+       }
+       
+       public String getModel(){
+           return this.model;
+       }
+       
+       public short getYear(){
+           return year;
        }
        
        
