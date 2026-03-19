@@ -9,10 +9,15 @@ package com.mycompany.formative2;
  * @author kobus
  */
 public class Customer {
-    String customer;
-    String contactNumber;
+    private int id;
+    private String customer;
+    private String contactNumber;
+    
+    static private int totalCustomers = -1;
     
     public Customer(String customer, String contactNumber){
+        totalCustomers++;
+        this.id=totalCustomers;
         this.customer = customer;
         this.contactNumber = contactNumber;
     }

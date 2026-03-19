@@ -7,6 +7,10 @@ package com.mycompany.formative2;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 /**
  *
  * @author kobus
@@ -133,9 +137,9 @@ public class MainApp {
         // Initiating objects
         Scanner input = new Scanner(System.in);
         
-// |=========================| Vin Lookup |=========================|
+// |=========================| Implementing VIN Lookup |=========================|
         // |=====| Getting VIN |=====|
-        System.out.println("=== BMW Digital Service Appointment System ===");
+        System.out.println("===== BMW Digital Service Appointment System =====");
         System.out.println("Please enter the Vehicle Identification number to retrieve verhicle information: ");
         String lookupVin = input.nextLine();
         
@@ -161,9 +165,72 @@ public class MainApp {
         } else{
             System.out.println("Vehicle not found.");
         }
+
+        // |=====| New information obtained |=====|
+        // Vehicle id
+        // vehicles[lookupVehicleId].\attribute
+// |=========================| Book service appoiintment |=========================|
+        if (lookupVehicleId != -1){
+            System.out.println("=== Book service appointment ===");
+            // |=====| Date format |=====|
+            String dateFormat = "(DD/MM/YYYY)";
+            // |=====| Obtaining appointment information |=====|
+            // Get customer name Customer: Type String
+            System.out.println("Enter Customer Name: ");
+            String customer = input.nextLine();
+
+            // Get customer contact number: Type String
+            System.out.println("Enter Contact Number");
+            String contactNum = input.nextLine();
+
+            // -->> Get appointment data: Type date <<--
+            LocalDate appointmentDate = null;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            while (appointmentDate == null){
+                System.out.println("Enter Appointment Date " + dateFormat);
+                String userInput = input.nextLine();
+
+                try{ // Trying to parse string to date object
+                    appointmentDate = LocalDate.parse(userInput, formatter);
+                    System.out.println("Succesfully parsed date");
+                } catch (DateTimeParseException e) { // Print error to the screen: ask user to enter correct 
+                    System.err.println("Invalid date format or date: " + userInput);
+                    System.err.println("Please use correct format and enter a valid date");
+                }
+            // --->>> Service appointment booked
+            // |===============| Confirm service appointment  |===============|
+            System.out.println("\nAppointment confirmation\n----------------------");
+            System.out.println("Vehicle details:");
+            System.out.printf("VIN: %s\nModel: %s\nYear: %s\n\n", 
+                    vehicles[lookupVehicleId].vin, vehicles[lookupVehicleId].model, vehicles[lookupVehicleId].year);
+            System.out.println("Appointment details:");
+            System.out.printf("Customer Name: %s\nCustomer Contact Number: %s\nAppointment Date %s%n\n\n", customer, contactNum, appointmentDate);
+            
+            System.out.println("Confirm appointment: (Y/N)");
+            
+            // Confirm appointment
+            userInput = input.nextLine();
+            userInput = userInput.toUpperCase();
+            
+            if (userInput.indexOf("Y") != -1) { // There is a 'Y' in the user input and the appointment is confirmed
+                Appointment appointmentObject = new Appointment(vehicles[lookupVehicleId].vin, appointmentDate);
+                Customer customerObject = new Customer(customer, contactNum);
+                System.out.println("Appointment succesfully booked");
+                
+            } else { // There is not a 'y' in the user input and the appointment is not confirmed
+                System.out.println("Appointment succesfully canceled");
+            }
+            
+            
+        }   
+        }
         
         
+       
         
-        input.close();
+        
+
+        input.close(); // |----->>> Closing input
     }
 }

@@ -4,7 +4,6 @@
  */
 package com.mycompany.formative2;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 /**
  *
@@ -14,14 +13,17 @@ public class Appointment {
     private int id;
     private String vin;
     private LocalDate date;
-    private LocalTime time;
+    
+    static private int totalAppointments = -1;
     
     // Constructor method
-    public Appointment(int id, String vin, LocalDate date, LocalTime time) {
-        this.id = id;
+    public Appointment(String vin, LocalDate date) {
+        totalAppointments++;
+        
+        this.id = totalAppointments;
         this.vin = vin;
         this.date = date;
-        this.time = time;
+
     }
     
     // Overriding toString method
@@ -30,11 +32,9 @@ public class Appointment {
         // Formatting date and time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDate = this.date.format(formatter);
-        formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String formattedTime = this.time.format(formatter);
         
         // Return
-        String result = "Appointment is schedueled for " + formattedDate + " at " + formattedTime + " for vehicle with VIN: " + this.vin;
+        String result = "Appointment is schedueled for " + formattedDate + " for vehicle with VIN: " + this.vin;
         return result;
     }
 }
